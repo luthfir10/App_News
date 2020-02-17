@@ -1,25 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Loadable from "react-loadable";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Container, Row } from "react-bootstrap";
+import { DefaultHeader } from "./container";
+
+const Loading = () => <div>Loading...</div>;
+const Home = Loadable({
+  loader: () => import("./views/Home"),
+  loading: Loading
+});
+const List = Loadable({
+  loader: () => import("./views/Pages/List/ListNews"),
+  loading: Loading
+});
+const Deatilnews = Loadable({
+  loader: () => import("./views/Pages/Detailnews/Detail"),
+  loading: Loading
+});
+const Page404 = Loadable({
+  loader: () => import("./views/Pages/Error/Page404"),
+  loading: Loading
+});
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <DefaultHeader />
+      <Container className="themed-container">
+        <Row>
+          <Switch>
+            <Route exact path="/" component={Home} />
+            <Route path="/List" component={List} />
+            <Route path="/detail" component={Deatilnews} />
+            <Route path="*" component={Page404} />
+          </Switch>
+        </Row>
+      </Container>
+    </Router>
   );
 }
 
